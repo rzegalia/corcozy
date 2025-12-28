@@ -8,6 +8,11 @@ function ShopMode({ firebase }) {
   const [selectedUser, setSelectedUser] = useState(urlUserName || '');
   const [checkedItems, setCheckedItems] = useState({});
 
+  // Name entry modal state
+  const [showNameModal, setShowNameModal] = useState(false);
+  const [pendingIngredient, setPendingIngredient] = useState(null);
+  const [nameInput, setNameInput] = useState('');
+
   // Auto-select current user if they exist and no URL param
   useEffect(() => {
     if (!urlUserName && firebase.currentUser && !selectedUser) {
@@ -101,14 +106,23 @@ function ShopMode({ firebase }) {
     } else {
       // Claim it
       if (!firebase.currentUser) {
-        const name = prompt('Enter your name:');
-        if (name && name.trim()) {
-          firebase.setCurrentUser(name.trim());
-          firebase.claimIngredient(ingredientName, name.trim());
-        }
+        // Show modal to get name first
+        setPendingIngredient(ingredientName);
+        setNameInput('');
+        setShowNameModal(true);
       } else {
         firebase.claimIngredient(ingredientName, firebase.currentUser);
       }
+    }
+  };
+
+  const handleNameSubmit = () => {
+    if (nameInput.trim() && pendingIngredient) {
+      firebase.setCurrentUser(nameInput.trim());
+      firebase.claimIngredient(pendingIngredient, nameInput.trim());
+      setShowNameModal(false);
+      setPendingIngredient(null);
+      setNameInput('');
     }
   };
 
@@ -158,6 +172,43 @@ function ShopMode({ firebase }) {
 
   return (
     <div className="animate-fade-in">
+      {/* Name Entry Modal */}
+      {showNameModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-bg-card rounded-xl p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold text-text-primary mb-2">Who are you?</h3>
+            <p className="text-sm text-text-secondary mb-4">Enter your name to claim this item</p>
+            <input
+              type="text"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              placeholder="Enter your name"
+              className="w-full bg-bg-secondary border border-text-muted/30 rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-accent-gold mb-4"
+              autoFocus
+              onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setShowNameModal(false);
+                  setPendingIngredient(null);
+                }}
+                className="flex-1 py-3 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleNameSubmit}
+                disabled={!nameInput.trim()}
+                className="flex-1 py-3 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Claim
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* User Selection */}
       <div className="mb-6">
         <label className="block text-sm text-text-secondary mb-2">
@@ -166,7 +217,7 @@ function ShopMode({ firebase }) {
         <select
           value={selectedUser}
           onChange={(e) => setSelectedUser(e.target.value)}
-          className="w-full bg-bg-card border border-text-muted/30 rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-accent-gold transition-colors"
+          className="w-full bg-bg-card border border-text-muted/30 rounded-lg px-4 py-3 text-text-primary text-base focus:outline-none focus:border-accent-gold transition-colors"
         >
           <option value="">Select a person...</option>
           <option value="__everyone__">Everyone (Full Party List)</option>
@@ -186,7 +237,7 @@ function ShopMode({ firebase }) {
           {claimers.length === 0 && (
             <Link
               to="/plan"
-              className="inline-block bg-accent-gold text-bg-primary font-semibold py-2 px-6 rounded-lg hover:bg-accent-amber transition-colors mt-4"
+              className="inline-block bg-accent-gold text-bg-primary font-semibold py-3 px-6 rounded-lg hover:bg-accent-amber transition-colors mt-4"
             >
               Claim some dishes first
             </Link>
@@ -238,13 +289,13 @@ function ShopMode({ firebase }) {
           <div className="flex gap-2 mb-6">
             <button
               onClick={copyToClipboard}
-              className="flex-1 bg-bg-card hover:bg-bg-card-hover text-text-primary py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-bg-card hover:bg-bg-card-hover text-text-primary py-3 px-4 rounded-lg transition-colors"
             >
               📋 Copy List
             </button>
             <button
               onClick={() => window.print()}
-              className="flex-1 bg-bg-card hover:bg-bg-card-hover text-text-primary py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-bg-card hover:bg-bg-card-hover text-text-primary py-3 px-4 rounded-lg transition-colors"
             >
               🖨️ Print
             </button>
@@ -281,7 +332,6 @@ function ShopMode({ firebase }) {
                   {items.map((ing, idx) => {
                     const isChecked = checkedItems[ing.name.toLowerCase()];
                     const ingredientClaim = firebase.getIngredientClaim(ing.name);
-                    const isCoveredByOther = ingredientClaim && ingredientClaim.claimedBy !== selectedUser;
 
                     return (
                       <div
@@ -300,12 +350,12 @@ function ShopMode({ firebase }) {
                             type="checkbox"
                             checked={isChecked}
                             onChange={() => toggleItem(ing.name)}
-                            className="mt-1 cursor-pointer"
+                            className="mt-1 cursor-pointer w-5 h-5"
                           />
                         )}
 
                         <div
-                          className="flex-1 min-w-0 cursor-pointer"
+                          className="flex-1 min-w-0"
                           onClick={() => !isEveryoneMode && !ingredientClaim && toggleItem(ing.name)}
                         >
                           <div className={`font-medium ${
@@ -319,7 +369,7 @@ function ShopMode({ firebase }) {
 
                           {/* Show which dishes need this (in Everyone mode) */}
                           {isEveryoneMode && ing.sources && (
-                            <div className="text-xs text-text-muted mt-1 flex flex-wrap gap-1">
+                            <div className="text-xs text-text-muted mt-1 flex flex-wrap gap-x-2 gap-y-1">
                               {ing.sources.map(sourceId => {
                                 const info = getDishInfo(sourceId);
                                 if (!info) return null;
@@ -354,15 +404,21 @@ function ShopMode({ firebase }) {
                         <div className="flex-shrink-0">
                           {ingredientClaim ? (
                             <button
-                              onClick={() => handleClaimIngredient(ing.name)}
-                              className="text-xs bg-claimed text-claimed-text px-2 py-1 rounded-full hover:bg-claimed/80 transition-colors"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleClaimIngredient(ing.name);
+                              }}
+                              className="text-xs bg-claimed text-claimed-text px-3 py-2 rounded-full hover:bg-claimed/80 transition-colors min-h-[36px]"
                             >
                               {ingredientClaim.claimedBy === firebase.currentUser ? '✓ You' : ingredientClaim.claimedBy}
                             </button>
                           ) : (
                             <button
-                              onClick={() => handleClaimIngredient(ing.name)}
-                              className="text-xs bg-bg-secondary text-text-secondary px-2 py-1 rounded-full hover:bg-accent-gold hover:text-bg-primary transition-colors"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleClaimIngredient(ing.name);
+                              }}
+                              className="text-xs bg-accent-gold text-bg-primary font-medium px-3 py-2 rounded-full hover:bg-accent-amber transition-colors min-h-[36px] whitespace-nowrap"
                             >
                               I'll bring this
                             </button>

@@ -11,6 +11,10 @@ function PlanMode({ firebase }) {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [equipmentNote, setEquipmentNote] = useState('');
 
+  // Name entry modal state (for equipment claims when no current user)
+  const [showNameModal, setShowNameModal] = useState(false);
+  const [nameInput, setNameInput] = useState('');
+
   const handleClaimClick = (item) => {
     const claim = firebase.claims[item.id];
     if (claim) {
@@ -50,18 +54,28 @@ function PlanMode({ firebase }) {
 
   const handleEquipmentClaim = async () => {
     if (selectedEquipment) {
-      // Use current user or prompt for name
-      const claimerName = firebase.currentUser || prompt('Enter your name:');
-      if (claimerName && claimerName.trim()) {
-        await firebase.claimEquipment(selectedEquipment.id, claimerName.trim(), equipmentNote);
-        // Set as current user if not already set
-        if (!firebase.currentUser) {
-          firebase.setCurrentUser(claimerName.trim());
-        }
+      // Use current user or show name modal
+      if (!firebase.currentUser) {
+        setEquipmentModalOpen(false);
+        setNameInput('');
+        setShowNameModal(true);
+        return;
       }
+      await firebase.claimEquipment(selectedEquipment.id, firebase.currentUser, equipmentNote);
       setEquipmentModalOpen(false);
       setSelectedEquipment(null);
       setEquipmentNote('');
+    }
+  };
+
+  const handleNameSubmit = async () => {
+    if (nameInput.trim() && selectedEquipment) {
+      firebase.setCurrentUser(nameInput.trim());
+      await firebase.claimEquipment(selectedEquipment.id, nameInput.trim(), equipmentNote);
+      setShowNameModal(false);
+      setSelectedEquipment(null);
+      setEquipmentNote('');
+      setNameInput('');
     }
   };
 
@@ -198,15 +212,53 @@ function PlanMode({ firebase }) {
                   setEquipmentModalOpen(false);
                   setSelectedEquipment(null);
                 }}
-                className="flex-1 py-2 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors"
+                className="flex-1 py-3 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors min-h-[44px]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleEquipmentClaim}
-                className="flex-1 py-2 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors"
+                className="flex-1 py-3 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors min-h-[44px]"
               >
                 {firebase.currentUser ? `Claim as ${firebase.currentUser}` : 'Claim'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Name Entry Modal */}
+      {showNameModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-bg-card rounded-xl p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold text-text-primary mb-2">Who are you?</h3>
+            <p className="text-sm text-text-secondary mb-4">Enter your name to claim this equipment</p>
+            <input
+              type="text"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              placeholder="Enter your name"
+              className="w-full bg-bg-secondary border border-text-muted/30 rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-accent-gold mb-4"
+              autoFocus
+              onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setShowNameModal(false);
+                  setSelectedEquipment(null);
+                  setEquipmentNote('');
+                }}
+                className="flex-1 py-3 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors min-h-[44px]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleNameSubmit}
+                disabled={!nameInput.trim()}
+                className="flex-1 py-3 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+              >
+                Claim
               </button>
             </div>
           </div>
