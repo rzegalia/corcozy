@@ -11,13 +11,14 @@ function PlanMode({ firebase }) {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [equipmentNote, setEquipmentNote] = useState('');
 
+  // Confirmation modal for removing claims
+  const [confirmModal, setConfirmModal] = useState({ show: false, type: null, id: null, name: null, claimedBy: null });
+
   const handleClaimClick = (item) => {
     const claim = firebase.claims[item.id];
     if (claim) {
-      // Item is already claimed - allow unclaim
-      if (window.confirm(`Remove ${claim.claimedBy}'s claim on ${item.name}?`)) {
-        firebase.unclaimItem(item.id);
-      }
+      // Item is already claimed - show confirmation modal
+      setConfirmModal({ show: true, type: 'dish', id: item.id, name: item.name, claimedBy: claim.claimedBy });
     } else {
       // Open modal to claim
       setSelectedItem(item);
@@ -36,16 +37,23 @@ function PlanMode({ firebase }) {
   const handleEquipmentClick = (equip) => {
     const claim = firebase.equipmentClaims[equip.id];
     if (claim) {
-      // Already claimed - allow unclaim
-      if (window.confirm(`Remove ${claim.claimedBy}'s claim on ${equip.name}?`)) {
-        firebase.unclaimEquipment(equip.id);
-      }
+      // Already claimed - show confirmation modal
+      setConfirmModal({ show: true, type: 'equipment', id: equip.id, name: equip.name, claimedBy: claim.claimedBy });
     } else {
       // Open modal to claim
       setSelectedEquipment(equip);
       setEquipmentNote('');
       setEquipmentModalOpen(true);
     }
+  };
+
+  const handleConfirmRemove = () => {
+    if (confirmModal.type === 'dish') {
+      firebase.unclaimItem(confirmModal.id);
+    } else if (confirmModal.type === 'equipment') {
+      firebase.unclaimEquipment(confirmModal.id);
+    }
+    setConfirmModal({ show: false, type: null, id: null, name: null, claimedBy: null });
   };
 
   const handleEquipmentClaim = async () => {
@@ -200,6 +208,34 @@ function PlanMode({ firebase }) {
                 className="flex-1 py-3 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors min-h-[44px]"
               >
                 I'll Bring This
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Modal for removing claims */}
+      {confirmModal.show && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-bg-card rounded-xl p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold text-text-primary mb-2">
+              Remove Claim?
+            </h3>
+            <p className="text-text-secondary mb-4">
+              Remove {confirmModal.claimedBy}'s claim on {confirmModal.name}?
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setConfirmModal({ show: false, type: null, id: null, name: null, claimedBy: null })}
+                className="flex-1 py-3 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors min-h-[44px]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmRemove}
+                className="flex-1 py-3 px-4 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors min-h-[44px]"
+              >
+                Remove
               </button>
             </div>
           </div>

@@ -8,6 +8,9 @@ function ShopMode({ firebase }) {
   const [viewMode, setViewMode] = useState('full');
   const [checkedItems, setCheckedItems] = useState({});
 
+  // Confirmation modal state
+  const [confirmModal, setConfirmModal] = useState({ show: false, ingredient: null, claimedBy: null });
+
   // Get items for current user's claimed dishes
   const myClaimedItemIds = useMemo(() => {
     if (!firebase.currentUser) return [];
@@ -73,13 +76,22 @@ function ShopMode({ firebase }) {
 
     if (currentClaim) {
       if (currentClaim.claimedBy === firebase.currentUser) {
+        // Own claim - remove directly
         firebase.unclaimIngredient(ingredientName);
-      } else if (window.confirm(`Remove ${currentClaim.claimedBy}'s claim on ${ingredientName}?`)) {
-        firebase.unclaimIngredient(ingredientName);
+      } else {
+        // Someone else's claim - show confirmation modal
+        setConfirmModal({ show: true, ingredient: ingredientName, claimedBy: currentClaim.claimedBy });
       }
     } else {
       await firebase.claimIngredient(ingredientName, firebase.currentUser);
     }
+  };
+
+  const handleConfirmRemove = () => {
+    if (confirmModal.ingredient) {
+      firebase.unclaimIngredient(confirmModal.ingredient);
+    }
+    setConfirmModal({ show: false, ingredient: null, claimedBy: null });
   };
 
   const copyToClipboard = () => {
@@ -367,6 +379,33 @@ function ShopMode({ firebase }) {
               </div>
             </div>
           ))}
+        </div>
+      )}
+      {/* Confirmation Modal for removing someone else's claim */}
+      {confirmModal.show && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-bg-card rounded-xl p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold text-text-primary mb-2">
+              Remove Claim?
+            </h3>
+            <p className="text-text-secondary mb-4">
+              {confirmModal.claimedBy} said they have this. Remove their claim?
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setConfirmModal({ show: false, ingredient: null, claimedBy: null })}
+                className="flex-1 py-3 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors min-h-[44px]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmRemove}
+                className="flex-1 py-3 px-4 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors min-h-[44px]"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
