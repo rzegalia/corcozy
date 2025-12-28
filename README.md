@@ -79,6 +79,12 @@ Firebase Realtime Database is used for syncing claims and pantry data across dev
       "$userName": {
         ".write": true
       }
+    },
+    "users": {
+      ".read": true,
+      "$userKey": {
+        ".write": true
+      }
     }
   }
 }

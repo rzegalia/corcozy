@@ -9,23 +9,10 @@ function Layout({ children, firebase }) {
   const [showUserModal, setShowUserModal] = useState(false);
   const [newUserName, setNewUserName] = useState('');
 
-  // Get all known users from claims
+  // Get registered users (persisted in Firebase)
   const knownUsers = useMemo(() => {
-    const users = new Set();
-    // From dish claims
-    Object.values(firebase.claims).forEach(claim => {
-      if (claim?.claimedBy) users.add(claim.claimedBy);
-    });
-    // From ingredient claims
-    Object.values(firebase.ingredientClaims || {}).forEach(claim => {
-      if (claim?.claimedBy) users.add(claim.claimedBy);
-    });
-    // From equipment claims
-    Object.values(firebase.equipmentClaims || {}).forEach(claim => {
-      if (claim?.claimedBy) users.add(claim.claimedBy);
-    });
-    return Array.from(users).sort();
-  }, [firebase.claims, firebase.ingredientClaims, firebase.equipmentClaims]);
+    return (firebase.registeredUsers || []).map(u => u.name);
+  }, [firebase.registeredUsers]);
 
   // Show welcome modal on first load if no user set
   const showWelcomeModal = !firebase.currentUser && !showUserModal;

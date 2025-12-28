@@ -46,6 +46,7 @@ export function useFirebase() {
   const [pantry, setPantry] = useState({});
   const [ingredientClaims, setIngredientClaims] = useState({});
   const [equipmentClaims, setEquipmentClaims] = useState({});
+  const [registeredUsers, setRegisteredUsers] = useState([]);
   const [currentUser, setCurrentUserState] = useState(() => {
     // Initialize from localStorage
     return localStorage.getItem('corcozy-current-user') || '';
@@ -53,16 +54,39 @@ export function useFirebase() {
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Persist currentUser to localStorage
-  const setCurrentUser = (name) => {
+  // Persist currentUser to localStorage and register in Firebase
+  const setCurrentUser = async (name) => {
     const trimmedName = name.trim();
     setCurrentUserState(trimmedName);
     if (trimmedName) {
       localStorage.setItem('corcozy-current-user', trimmedName);
       // Also update the last-name for claim modal consistency
       localStorage.setItem('corcozy-last-name', trimmedName);
+      // Register user in Firebase
+      await registerUser(trimmedName);
     } else {
       localStorage.removeItem('corcozy-current-user');
+    }
+  };
+
+  // Register a user in Firebase (so they show up in user list)
+  const registerUser = async (name) => {
+    const userKey = sanitizeFirebaseKey(name);
+    if (database) {
+      try {
+        await set(ref(database, `users/${userKey}`), {
+          name: name,
+          registeredAt: Date.now()
+        });
+      } catch (error) {
+        console.error('Error registering user:', error);
+      }
+    } else {
+      // Demo mode - add to local state
+      setRegisteredUsers(prev => {
+        if (prev.some(u => u.name.toLowerCase() === name.toLowerCase())) return prev;
+        return [...prev, { name, registeredAt: Date.now() }];
+      });
     }
   };
 
@@ -125,11 +149,24 @@ export function useFirebase() {
       setEquipmentClaims(data || {});
     });
 
+    // Listen to registered users
+    const usersRef = ref(database, 'users');
+    const unsubscribeUsers = onValue(usersRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const userList = Object.values(data).sort((a, b) => a.name.localeCompare(b.name));
+        setRegisteredUsers(userList);
+      } else {
+        setRegisteredUsers([]);
+      }
+    });
+
     return () => {
       unsubscribeClaims();
       unsubscribePantry();
       unsubscribeIngredientClaims();
       unsubscribeEquipmentClaims();
+      unsubscribeUsers();
     };
   }, []);
 
@@ -288,6 +325,7 @@ export function useFirebase() {
     pantry,
     ingredientClaims,
     equipmentClaims,
+    registeredUsers,
     currentUser,
     isConnected,
     isLoading,
