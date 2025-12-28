@@ -17,8 +17,8 @@ export const equipment = [
   {
     id: 'crockpot-3',
     name: 'Crockpot / Slow Cooker #3',
-    neededFor: ['carb-cuddles', 'the-meatball-mountain'],
-    note: 'For cheese sauce or keeping meatballs warm'
+    neededFor: ['carb-cuddles'],
+    note: 'For keeping cheese sauce warm'
   },
   {
     id: 'cast-iron',
@@ -33,10 +33,10 @@ export const equipment = [
     note: 'Big enough for the cheese board spread'
   },
   {
-    id: 'baking-sheets-extra',
-    name: 'Extra Baking Sheets (2-3)',
-    neededFor: ['the-meatball-mountain'],
-    note: 'Meatballs need 2-3 sheets at once'
+    id: 'dutch-oven',
+    name: 'Dutch Oven / Large Braising Pot',
+    neededFor: ['the-cozy-braise'],
+    note: 'Heavy-bottomed pot for braising short ribs (6-8 qt)'
   }
 ];
 

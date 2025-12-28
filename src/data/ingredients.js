@@ -74,17 +74,6 @@ export const ingredients = {
     { name: 'Tortilla chips', quantity: '1 large bag', category: 'snacks' }
   ],
 
-  'the-loaded-lounge': [
-    { name: 'Large russet potatoes', quantity: '8 potatoes', category: 'produce', note: 'Similar size for even cooking' },
-    { name: 'Butter', quantity: '1 stick (8 tbsp)', category: 'dairy' },
-    { name: 'Sour cream', quantity: '16 oz container', category: 'dairy' },
-    { name: 'Shredded cheddar', quantity: '2 cups', category: 'dairy' },
-    { name: 'Bacon', quantity: '1 lb', category: 'meat', note: 'Or 1 cup pre-made bacon bits' },
-    { name: 'Chives or green onions', quantity: '1 bunch', category: 'produce' },
-    { name: 'Broccoli florets', quantity: '2 cups', category: 'produce', note: 'Optional, steam until just tender' },
-    { name: 'Salt and pepper', quantity: 'To taste', category: 'spices' }
-  ],
-
   'pigs-in-a-blanket': [
     { name: 'Little smokies', quantity: '2 packs (28 oz total)', category: 'meat' },
     { name: 'Crescent roll dough', quantity: '2 cans', category: 'refrigerated' },
@@ -93,35 +82,52 @@ export const ingredients = {
     { name: 'Dijon mustard', quantity: '1 jar', category: 'condiments', note: 'For dipping' }
   ],
 
-  'the-meatball-mountain': [
-    // Beef meatballs
-    { name: 'Ground beef (80/20)', quantity: '1.5 lbs', category: 'meat', note: 'For beef meatballs' },
-    // Chicken meatballs
-    { name: 'Ground chicken', quantity: '1.5 lbs', category: 'meat', note: 'For chicken meatballs' },
-    // Turkey meatballs
-    { name: 'Ground turkey', quantity: '1.5 lbs', category: 'meat', note: 'For turkey meatballs' },
-    // Shared meatball ingredients
-    { name: 'Italian breadcrumbs', quantity: '1.5 cups', category: 'pantry', note: 'For all meatballs' },
-    { name: 'Grated Parmesan', quantity: '3/4 cup', category: 'dairy', note: 'For all meatballs' },
-    { name: 'Eggs', quantity: '3 eggs', category: 'dairy', note: 'One per meat type' },
-    { name: 'Garlic', quantity: '6 cloves', category: 'produce', note: 'Minced, for all meatballs' },
-    { name: 'Italian seasoning', quantity: '1 tbsp', category: 'spices' },
-    { name: 'Fresh parsley', quantity: '1 bunch', category: 'produce', note: 'About 6 tbsp chopped' },
-    { name: 'Milk', quantity: '1/4 cup', category: 'dairy', note: 'Keeps meatballs moist' },
-    // For serving
-    { name: 'Marinara sauce', quantity: '3 jars (24 oz each)', category: 'canned' },
-    { name: 'Slider buns or hoagie rolls', quantity: '16-20 rolls', category: 'bakery' },
-    { name: 'Shredded mozzarella', quantity: '2 cups', category: 'dairy' },
-    { name: 'Extra Parmesan', quantity: 'For topping', category: 'dairy' }
+  'the-cozy-braise': [
+    { name: 'Bone-in short ribs', quantity: '5-6 lbs', category: 'meat', note: 'About 8 large ribs' },
+    { name: 'Beef broth', quantity: '4 cups', category: 'pantry' },
+    { name: 'Red wine', quantity: '2 cups', category: 'alcohol', note: 'A dry red like Cabernet' },
+    { name: 'Onion', quantity: '2 large', category: 'produce', note: 'Roughly chopped' },
+    { name: 'Carrots', quantity: '4 large', category: 'produce', note: 'Cut into chunks' },
+    { name: 'Celery', quantity: '4 stalks', category: 'produce', note: 'Cut into chunks' },
+    { name: 'Garlic', quantity: '6 cloves', category: 'produce' },
+    { name: 'Tomato paste', quantity: '3 tbsp', category: 'canned' },
+    { name: 'Fresh thyme', quantity: '5-6 sprigs', category: 'produce' },
+    { name: 'Fresh rosemary', quantity: '2 sprigs', category: 'produce' },
+    { name: 'Bay leaves', quantity: '2 leaves', category: 'spices' },
+    { name: 'Flour', quantity: '1/2 cup', category: 'baking', note: 'For dredging' },
+    { name: 'Olive oil', quantity: '3 tbsp', category: 'pantry' },
+    { name: 'Salt and pepper', quantity: 'To taste', category: 'spices' }
   ],
 
-  'the-garlic-cloud': [
-    { name: 'French baguettes', quantity: '2 baguettes', category: 'bakery' },
-    { name: 'Butter', quantity: '1 stick (8 tbsp)', category: 'dairy', note: 'Softened' },
-    { name: 'Garlic', quantity: '4-5 cloves', category: 'produce', note: 'Minced fine' },
-    { name: 'Fresh parsley', quantity: '3 tbsp chopped', category: 'produce' },
-    { name: 'Garlic powder', quantity: '1/2 tsp', category: 'spices', note: 'Boosts garlic flavor' },
-    { name: 'Salt', quantity: 'Pinch', category: 'spices' }
+  'the-fluffy-cloud': [
+    { name: 'Yukon Gold potatoes', quantity: '4 lbs', category: 'produce', note: 'About 10-12 medium potatoes' },
+    { name: 'Butter', quantity: '1 stick (8 tbsp)', category: 'dairy' },
+    { name: 'Heavy cream', quantity: '1 cup', category: 'dairy', note: 'Warm before adding' },
+    { name: 'Sour cream', quantity: '1/2 cup', category: 'dairy', note: 'Optional but delicious' },
+    { name: 'Garlic', quantity: '4 cloves', category: 'produce', note: 'Roasted or minced' },
+    { name: 'Salt', quantity: 'To taste', category: 'spices' },
+    { name: 'White pepper', quantity: 'To taste', category: 'spices', note: 'Or black pepper' },
+    { name: 'Fresh chives', quantity: '2 tbsp', category: 'produce', note: 'For garnish' }
+  ],
+
+  'the-green-crunch': [
+    { name: 'Broccoli crowns', quantity: '3 lbs', category: 'produce', note: 'Cut into florets' },
+    { name: 'Olive oil', quantity: '3 tbsp', category: 'pantry' },
+    { name: 'Garlic', quantity: '4 cloves', category: 'produce', note: 'Minced' },
+    { name: 'Lemon', quantity: '1 lemon', category: 'produce', note: 'For zest and juice' },
+    { name: 'Parmesan cheese', quantity: '1/4 cup grated', category: 'dairy', note: 'Optional topping' },
+    { name: 'Red pepper flakes', quantity: '1/4 tsp', category: 'spices', note: 'Optional' },
+    { name: 'Salt and pepper', quantity: 'To taste', category: 'spices' }
+  ],
+
+  'the-garden-refresh': [
+    { name: 'Mixed salad greens', quantity: '2 large containers (10 oz each)', category: 'produce' },
+    { name: 'Cherry tomatoes', quantity: '1 pint', category: 'produce' },
+    { name: 'Cucumber', quantity: '1 large', category: 'produce' },
+    { name: 'Red onion', quantity: '1/2 medium', category: 'produce', note: 'Thinly sliced' },
+    { name: 'Croutons', quantity: '1 bag', category: 'pantry' },
+    { name: 'Salad dressing', quantity: '2 bottles', category: 'condiments', note: 'Ranch and vinaigrette' },
+    { name: 'Shredded Parmesan', quantity: '1/2 cup', category: 'dairy', note: 'Optional' }
   ],
 
   'campfire-dreams': [

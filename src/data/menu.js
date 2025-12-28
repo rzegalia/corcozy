@@ -62,12 +62,6 @@ export const menuSections = [
         emoji: '🌶️'
       },
       {
-        id: 'the-loaded-lounge',
-        name: 'The Loaded Lounge',
-        description: 'Baked potato bar with all the toppings',
-        emoji: '🥔'
-      },
-      {
         id: 'pigs-in-a-blanket',
         name: 'Pigs in a Blanket',
         description: 'With everything bagel seasoning',
@@ -82,16 +76,28 @@ export const menuSections = [
     description: 'The heart of the feast',
     items: [
       {
-        id: 'the-meatball-mountain',
-        name: 'The Meatball Mountain',
-        description: 'Three kinds of homemade meatballs (beef, chicken, turkey) in marinara, build your own subs',
-        emoji: '🍝'
+        id: 'the-cozy-braise',
+        name: 'The Cozy Braise',
+        description: 'Tender braised short ribs',
+        emoji: '🥩'
       },
       {
-        id: 'the-garlic-cloud',
-        name: 'The Garlic Cloud',
-        description: 'Warm garlic bread',
-        emoji: '🥖'
+        id: 'the-fluffy-cloud',
+        name: 'The Fluffy Cloud',
+        description: 'Creamy mashed potatoes',
+        emoji: '🥔'
+      },
+      {
+        id: 'the-green-crunch',
+        name: 'The Green Crunch',
+        description: 'Roasted broccoli',
+        emoji: '🥦'
+      },
+      {
+        id: 'the-garden-refresh',
+        name: 'The Garden Refresh',
+        description: 'Fresh salad',
+        emoji: '🥗'
       }
     ]
   },
