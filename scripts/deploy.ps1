@@ -33,7 +33,8 @@ if ($LASTEXITCODE -ne 0) {
 # Step 4: Restart the service
 Write-Host "`n[4/4] Restarting service..." -ForegroundColor Yellow
 # Kill existing node process and restart via task scheduler
-ssh $server 'taskkill /f /im node.exe 2>nul & schtasks /run /tn "Corcozy NYE"'
+ssh $server "taskkill /f /im node.exe 2>nul"
+ssh $server "schtasks /run /tn `"Corcozy NYE`""
 
 Write-Host "`nDeployment complete!" -ForegroundColor Green
 Write-Host "App should be live at https://nye.madfatter.lol" -ForegroundColor Cyan
