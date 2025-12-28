@@ -4,7 +4,10 @@
       "Bash(timeout 10 npm run dev:*)",
       "Bash(gh --version:*)",
       "Bash(where:*)",
-      "Bash(ssh:*)"
+      "Bash(ssh:*)",
+      "Bash(curl:*)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)"
     ]
   }
 }

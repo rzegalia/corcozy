@@ -14,13 +14,16 @@ function PlanMode({ firebase }) {
   // Confirmation modal for removing claims
   const [confirmModal, setConfirmModal] = useState({ show: false, type: null, id: null, name: null, claimedBy: null });
 
-  const handleClaimClick = (item) => {
+  const handleClaimClick = async (item) => {
     const claim = firebase.claims[item.id];
     if (claim) {
       // Item is already claimed - show confirmation modal
       setConfirmModal({ show: true, type: 'dish', id: item.id, name: item.name, claimedBy: claim.claimedBy });
+    } else if (firebase.currentUser) {
+      // User is logged in - claim directly without modal
+      await firebase.claimItem(item.id, firebase.currentUser);
     } else {
-      // Open modal to claim
+      // No current user - show modal to get name
       setSelectedItem(item);
       setModalOpen(true);
     }
