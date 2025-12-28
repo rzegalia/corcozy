@@ -62,6 +62,18 @@ Firebase Realtime Database is used for syncing claims and pantry data across dev
         ".validate": "newData.hasChildren(['claimedBy', 'claimedAt']) && newData.child('claimedBy').isString() && newData.child('claimedBy').val().length > 0 && newData.child('claimedBy').val().length < 50"
       }
     },
+    "ingredientClaims": {
+      ".read": true,
+      "$ingredientKey": {
+        ".write": true
+      }
+    },
+    "equipmentClaims": {
+      ".read": true,
+      "$equipmentId": {
+        ".write": true
+      }
+    },
     "pantry": {
       ".read": true,
       "$userName": {
@@ -71,9 +83,5 @@ Firebase Realtime Database is used for syncing claims and pantry data across dev
   }
 }
 ```
-
-## Pre-populated Claims
-
-- Big Mike → The Meatball Mountain
 
 Happy New Year!

@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import { menuSections } from '../data/menu';
+import { menuSections, getItemById } from '../data/menu';
+import { equipment } from '../data/equipment';
 import MenuItem from './MenuItem';
 import ClaimModal from './ClaimModal';
 
 function PlanMode({ firebase }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [equipmentModalOpen, setEquipmentModalOpen] = useState(false);
+  const [selectedEquipment, setSelectedEquipment] = useState(null);
+  const [equipmentNote, setEquipmentNote] = useState('');
 
   const handleClaimClick = (item) => {
     const claim = firebase.claims[item.id];
@@ -27,6 +31,47 @@ function PlanMode({ firebase }) {
       setModalOpen(false);
       setSelectedItem(null);
     }
+  };
+
+  const handleEquipmentClick = (equip) => {
+    const claim = firebase.equipmentClaims[equip.id];
+    if (claim) {
+      // Already claimed - allow unclaim
+      if (window.confirm(`Remove ${claim.claimedBy}'s claim on ${equip.name}?`)) {
+        firebase.unclaimEquipment(equip.id);
+      }
+    } else {
+      // Open modal to claim
+      setSelectedEquipment(equip);
+      setEquipmentNote('');
+      setEquipmentModalOpen(true);
+    }
+  };
+
+  const handleEquipmentClaim = async () => {
+    if (selectedEquipment) {
+      // Use current user or prompt for name
+      const claimerName = firebase.currentUser || prompt('Enter your name:');
+      if (claimerName && claimerName.trim()) {
+        await firebase.claimEquipment(selectedEquipment.id, claimerName.trim(), equipmentNote);
+        // Set as current user if not already set
+        if (!firebase.currentUser) {
+          firebase.setCurrentUser(claimerName.trim());
+        }
+      }
+      setEquipmentModalOpen(false);
+      setSelectedEquipment(null);
+      setEquipmentNote('');
+    }
+  };
+
+  // Get dish names for equipment display
+  const getDishNames = (itemIds) => {
+    return itemIds
+      .map(id => getItemById(id))
+      .filter(Boolean)
+      .map(item => item.name)
+      .join(', ');
   };
 
   return (
@@ -62,6 +107,63 @@ function PlanMode({ firebase }) {
         </section>
       ))}
 
+      {/* Equipment Section */}
+      <section className="space-y-4 pt-4 border-t border-bg-card">
+        <div className="border-b border-bg-card pb-2">
+          <h3 className="text-xl font-bold text-accent-gold">Equipment Needed</h3>
+          <p className="text-sm text-text-secondary">
+            Unusual items we'll need - claim if you can bring one!
+          </p>
+        </div>
+
+        <div className="grid gap-3">
+          {equipment.map((equip) => {
+            const claim = firebase.equipmentClaims[equip.id];
+            return (
+              <div
+                key={equip.id}
+                onClick={() => handleEquipmentClick(equip)}
+                className={`p-4 rounded-xl cursor-pointer transition-all ${
+                  claim
+                    ? 'bg-claimed/30 border border-claimed/50'
+                    : 'bg-bg-card hover:bg-bg-card-hover border border-transparent'
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">🍳</span>
+                      <span className="font-medium text-text-primary">{equip.name}</span>
+                    </div>
+                    <p className="text-sm text-text-secondary mt-1">{equip.note}</p>
+                    <p className="text-xs text-text-muted mt-1">
+                      For: {getDishNames(equip.neededFor)}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0">
+                    {claim ? (
+                      <div className="text-right">
+                        <span className="inline-block bg-claimed text-claimed-text text-sm font-medium px-3 py-1 rounded-full">
+                          {claim.claimedBy}
+                        </span>
+                        {claim.note && (
+                          <p className="text-xs text-claimed-text mt-1">{claim.note}</p>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="inline-block bg-accent-amber/20 text-accent-amber text-sm px-3 py-1 rounded-full">
+                        Needed
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Dish Claim Modal */}
       <ClaimModal
         isOpen={modalOpen}
         item={selectedItem}
@@ -71,6 +173,45 @@ function PlanMode({ firebase }) {
         }}
         onClaim={handleClaim}
       />
+
+      {/* Equipment Claim Modal */}
+      {equipmentModalOpen && selectedEquipment && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-bg-card rounded-xl p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold text-text-primary mb-2">
+              I'll bring this!
+            </h3>
+            <p className="text-text-secondary mb-4">{selectedEquipment.name}</p>
+
+            <input
+              type="text"
+              value={equipmentNote}
+              onChange={(e) => setEquipmentNote(e.target.value)}
+              placeholder="Optional note (e.g., 'my 6-qt Instant Pot')"
+              className="w-full bg-bg-secondary border border-text-muted/30 rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-accent-gold mb-4"
+              onKeyDown={(e) => e.key === 'Enter' && handleEquipmentClaim()}
+            />
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setEquipmentModalOpen(false);
+                  setSelectedEquipment(null);
+                }}
+                className="flex-1 py-2 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleEquipmentClaim}
+                className="flex-1 py-2 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors"
+              >
+                {firebase.currentUser ? `Claim as ${firebase.currentUser}` : 'Claim'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
