@@ -18,9 +18,13 @@ The app runs on port 3030 at `http://localhost:3030`.
 
 ## Features
 
-- **Plan Mode**: View the full menu and claim items by entering your name
-- **Shop Mode**: Get a personalized shopping list based on your claimed items
+- **User Identity**: Enter your name once, it's remembered across devices. Quick-select from registered users on any device.
+- **Plan Mode**: View the full menu, claim dishes, and claim equipment (cookware needed for the party)
+- **Shop Mode**:
+  - "Full Party List" - See all ingredients for all dishes, claim "I have this" for items you'll bring
+  - "My Shopping List" - Just ingredients for dishes you claimed, with checkbox tracking
 - **Cook Mode**: Step-by-step instructions with cooking term tooltips
+- **Real-time Sync**: All claims sync instantly across all devices via Firebase
 
 ## Deployment
 
