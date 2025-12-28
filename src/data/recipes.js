@@ -187,34 +187,6 @@ export const recipes = {
     ]
   },
 
-  'the-loaded-lounge': {
-    prepTime: '10 min',
-    cookTime: '60 min',
-    difficulty: 'Medium',
-    canMakeAhead: true,
-    makeAheadNote: 'Bake potatoes up to 2 hours ahead, keep wrapped in foil',
-    steps: [
-      'Preheat oven to 400°F.',
-      'Scrub potatoes clean under running water.',
-      'Dry potatoes and poke each one 5-6 times with a fork.',
-      'Place potatoes directly on the oven rack.',
-      'Bake 50-60 minutes until fork-tender all the way through.',
-      'While potatoes bake, prep your toppings:',
-      '  - Cook bacon until crispy, then crumble (or use bacon bits)',
-      '  - Chop chives or green onions',
-      '  - Steam broccoli until just tender if using',
-      '  - Put butter and sour cream in serving bowls',
-      '  - Put shredded cheddar in a bowl',
-      'When potatoes are done, wrap in a clean towel to keep warm.',
-      'Arrange all toppings in a line (butter → sour cream → cheese → bacon → veggies → salt/pepper).',
-      'Let everyone build their own!'
-    ],
-    tips: [
-      'Similar-sized potatoes cook more evenly.',
-      'A properly baked potato has a fluffy interior - don\'t undercook!'
-    ]
-  },
-
   'pigs-in-a-blanket': {
     prepTime: '15 min',
     cookTime: '15 min',
@@ -242,64 +214,152 @@ export const recipes = {
     ]
   },
 
-  'the-meatball-mountain': {
+  'the-cozy-braise': {
     prepTime: '30 min',
-    cookTime: '25 min + 30 min simmer',
+    cookTime: '3-4 hours',
     difficulty: 'Medium',
     canMakeAhead: true,
-    makeAheadNote: 'Make meatballs a day ahead, refrigerate. Simmer in sauce day-of.',
+    makeAheadNote: 'Best made a day ahead - flavors improve overnight. Reheat gently.',
     steps: [
-      'Preheat oven to 400°F.',
-      'Line 2-3 baking sheets with parchment paper.',
+      '**The day before or morning of:**',
+      'Remove short ribs from fridge 30 min before cooking.',
+      'Season ribs generously with salt and pepper on all sides.',
+      'Preheat oven to 325°F.',
       '',
-      '**For each type of meatball (repeat for beef, chicken, turkey):**',
-      'In a large bowl, combine the ground meat.',
-      'Add 1/2 cup breadcrumbs, 1/4 cup parmesan, and 1 beaten egg.',
-      'Add 2 cloves minced garlic, 1 tsp Italian seasoning.',
-      'Add 2 tbsp chopped parsley, salt, pepper, and a splash of milk.',
-      'Mix gently with your hands until just combined - don\'t overmix!',
-      'Roll into 1.5-inch balls (about 15-18 per batch).',
-      'Place on prepared baking sheet with space between.',
+      '**Sear the ribs:**',
+      'Heat olive oil in a Dutch oven over medium-high heat.',
+      'Dredge ribs lightly in flour, shaking off excess.',
+      'Sear ribs in batches (don\'t crowd!) until deep brown on all sides, about 3-4 min per side.',
+      'Transfer seared ribs to a plate.',
       '',
-      'Bake meatballs 18-22 minutes until cooked through (internal temp 165°F).',
-      'The outside should be nicely browned.',
+      '**Build the braise:**',
+      'Reduce heat to medium. Add onions to the pot.',
+      'Cook 5 min until softened, scraping up brown bits.',
+      'Add carrots and celery. Cook 3 min.',
+      'Add garlic and tomato paste. Stir 1 min until fragrant.',
+      'Pour in red wine. Scrape the bottom and let it simmer 2 min.',
+      'Add beef broth, thyme, rosemary, and bay leaves.',
+      'Bring to a simmer.',
       '',
-      '**Day of serving:**',
-      'Pour marinara sauce into a large pot or crockpot.',
-      'Add all cooked meatballs to the sauce.',
-      'Simmer on low heat 20-30 minutes (or keep warm in crockpot).',
+      '**Braise:**',
+      'Nestle the ribs back into the liquid (they don\'t need to be submerged).',
+      'Cover with lid and transfer to oven.',
+      'Braise 3-4 hours until meat is fall-off-the-bone tender.',
       '',
-      'Set out slider buns, shredded mozzarella, and extra parmesan.',
-      'Let everyone build their own meatball subs!'
+      '**To serve:**',
+      'Remove ribs carefully to a platter.',
+      'Strain the sauce, discarding vegetables.',
+      'Skim fat from sauce (or refrigerate overnight and lift off solidified fat).',
+      'Spoon sauce over ribs and serve.'
     ],
     tips: [
-      'The splash of milk keeps meatballs tender and moist.',
-      'Label each type so guests know what they\'re grabbing.',
-      'Toast the buns lightly for best results.'
+      'Don\'t skip searing - it builds incredible flavor.',
+      'Low and slow is the key - don\'t rush the braise.',
+      'These are even better the next day!'
     ]
   },
 
-  'the-garlic-cloud': {
-    prepTime: '10 min',
-    cookTime: '10 min',
+  'the-fluffy-cloud': {
+    prepTime: '15 min',
+    cookTime: '25 min',
     difficulty: 'Easy',
     canMakeAhead: true,
-    makeAheadNote: 'Make garlic butter ahead. Spread and wrap in foil, bake when ready.',
+    makeAheadNote: 'Keep warm in a covered pot up to 1 hour. Add splash of cream when reheating.',
     steps: [
-      'Preheat oven to 375°F.',
-      'Slice baguettes lengthwise (like a sub) or into thick diagonal slices.',
-      'In a small bowl, combine softened butter, minced garlic, garlic powder, chopped parsley, and a pinch of salt.',
-      'Mix until everything is well combined.',
-      'Spread the garlic butter generously on the cut sides of the bread.',
-      'For soft bread: Wrap in foil completely.',
-      'For crispy bread: Leave foil open on top or skip foil.',
-      'Bake 10 minutes until warm and fragrant.',
-      'Serve immediately - it\'s best hot!'
+      'Peel potatoes and cut into 2-inch chunks (similar size for even cooking).',
+      'Place potatoes in a large pot and cover with cold salted water by 2 inches.',
+      'Bring to a boil over high heat.',
+      'Reduce to a simmer and cook 15-20 min until fork-tender (fork slides in easily).',
+      '',
+      '**While potatoes cook:**',
+      'Warm the heavy cream in microwave or small pot (don\'t boil).',
+      'Cut butter into cubes so it melts evenly.',
+      'If using fresh garlic, mince it fine or roast it for mellower flavor.',
+      '',
+      '**Mash:**',
+      'Drain potatoes well and return to the hot pot.',
+      'Let them sit 1-2 min to steam off excess moisture.',
+      'Add butter and mash until mostly smooth.',
+      'Add warm cream gradually, mashing as you go.',
+      'Stir in sour cream and garlic.',
+      'Season with salt and white pepper to taste.',
+      'Stir until fluffy - don\'t overmix or they\'ll get gluey.',
+      '',
+      'Transfer to serving bowl and top with fresh chives.'
     ],
     tips: [
-      'Garlic powder boosts the garlic flavor throughout.',
-      'The butter should be soft but not melted for easier spreading.',
-      'Make extra - this goes fast.'
+      'Start potatoes in cold water for even cooking.',
+      'Warm cream is crucial - cold cream makes gummy potatoes.',
+      'Yukon Golds are naturally buttery and creamy.'
+    ]
+  },
+
+  'the-green-crunch': {
+    prepTime: '10 min',
+    cookTime: '20 min',
+    difficulty: 'Easy',
+    canMakeAhead: false,
+    steps: [
+      'Preheat oven to 425°F.',
+      'Cut broccoli into medium florets with some stem attached.',
+      'Wash and dry thoroughly (wet broccoli steams instead of roasting).',
+      '',
+      'In a large bowl, toss broccoli with olive oil.',
+      'Add minced garlic, salt, pepper, and red pepper flakes if using.',
+      'Toss until evenly coated.',
+      '',
+      'Spread in a single layer on a large baking sheet (use 2 if needed).',
+      'Don\'t crowd - crowded broccoli steams instead of crisping.',
+      '',
+      'Roast 18-22 minutes until edges are browned and crispy.',
+      'Toss halfway through for even browning.',
+      '',
+      'Remove from oven and immediately:',
+      '  - Zest lemon over the top',
+      '  - Squeeze lemon juice over',
+      '  - Sprinkle with parmesan if using',
+      '',
+      'Serve hot.'
+    ],
+    tips: [
+      'High heat = crispy edges. Don\'t lower the temp!',
+      'The crispy brown bits are the best part.',
+      'Dry broccoli is key - pat it with paper towels.'
+    ]
+  },
+
+  'the-garden-refresh': {
+    prepTime: '15 min',
+    cookTime: 'None',
+    difficulty: 'Easy',
+    canMakeAhead: true,
+    makeAheadNote: 'Prep ingredients ahead, assemble and dress right before serving',
+    steps: [
+      'Wash and thoroughly dry the salad greens.',
+      'If greens are whole, tear into bite-sized pieces.',
+      '',
+      '**Prep the vegetables:**',
+      'Halve or quarter the cherry tomatoes.',
+      'Slice cucumber into half-moons or dice.',
+      'Thinly slice the red onion into half-rings.',
+      '',
+      '**Assemble:**',
+      'Place greens in a large salad bowl.',
+      'Scatter tomatoes, cucumber, and red onion over the greens.',
+      'Add croutons.',
+      'Sprinkle parmesan over the top if using.',
+      '',
+      '**Dress the salad:**',
+      'Drizzle dressing just before serving.',
+      'Toss gently to coat.',
+      'Or set dressings on the side and let guests dress their own.',
+      '',
+      'Serve immediately - dressed salad wilts quickly.'
+    ],
+    tips: [
+      'A salad spinner is your best friend for dry greens.',
+      'Soak red onion in ice water for 10 min to mellow the bite.',
+      'Keep components separate until serving if making ahead.'
     ]
   },
 
