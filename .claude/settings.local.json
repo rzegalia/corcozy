@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(timeout 10 npm run dev:*)"
+      "Bash(timeout 10 npm run dev:*)",
+      "Bash(gh --version:*)",
+      "Bash(where:*)",
+      "Bash(ssh:*)"
     ]
   }
 }

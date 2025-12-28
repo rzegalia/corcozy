@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { menuSections } from '../data/menu';
 import ProgressBar from './ProgressBar';
@@ -9,8 +9,29 @@ function Layout({ children, firebase }) {
   const [showUserModal, setShowUserModal] = useState(false);
   const [newUserName, setNewUserName] = useState('');
 
+  // Get all known users from claims
+  const knownUsers = useMemo(() => {
+    const users = new Set();
+    // From dish claims
+    Object.values(firebase.claims).forEach(claim => {
+      if (claim?.claimedBy) users.add(claim.claimedBy);
+    });
+    // From ingredient claims
+    Object.values(firebase.ingredientClaims || {}).forEach(claim => {
+      if (claim?.claimedBy) users.add(claim.claimedBy);
+    });
+    // From equipment claims
+    Object.values(firebase.equipmentClaims || {}).forEach(claim => {
+      if (claim?.claimedBy) users.add(claim.claimedBy);
+    });
+    return Array.from(users).sort();
+  }, [firebase.claims, firebase.ingredientClaims, firebase.equipmentClaims]);
+
+  // Show welcome modal on first load if no user set
+  const showWelcomeModal = !firebase.currentUser && !showUserModal;
+
   const handleChangeUser = () => {
-    setNewUserName(firebase.currentUser);
+    setNewUserName(firebase.currentUser || '');
     setShowUserModal(true);
   };
 
@@ -21,13 +42,99 @@ function Layout({ children, firebase }) {
     setShowUserModal(false);
   };
 
+  const handleSelectExistingUser = (name) => {
+    firebase.setCurrentUser(name);
+    setShowUserModal(false);
+  };
+
   return (
     <div className="min-h-screen bg-bg-primary">
-      {/* User Change Modal */}
+      {/* Welcome Modal (first load) */}
+      {showWelcomeModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-bg-card rounded-xl p-6 w-full max-w-sm">
+            <div className="text-center mb-4">
+              <span className="text-4xl">🎉</span>
+              <h2 className="text-xl font-bold text-accent-gold mt-2">Welcome to Corcozy 2025!</h2>
+              <p className="text-sm text-text-secondary mt-1">Who's joining the party?</p>
+            </div>
+
+            {/* Quick select existing users */}
+            {knownUsers.length > 0 && (
+              <div className="mb-4">
+                <p className="text-xs text-text-muted mb-2">Select your name:</p>
+                <div className="flex flex-wrap gap-2">
+                  {knownUsers.map(name => (
+                    <button
+                      key={name}
+                      onClick={() => handleSelectExistingUser(name)}
+                      className="px-4 py-2 rounded-full bg-bg-secondary text-text-primary hover:bg-accent-gold hover:text-bg-primary transition-colors min-h-[44px]"
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Or enter new name */}
+            <div>
+              {knownUsers.length > 0 && (
+                <p className="text-xs text-text-muted mb-2">Or enter a new name:</p>
+              )}
+              <input
+                type="text"
+                value={newUserName}
+                onChange={(e) => setNewUserName(e.target.value)}
+                placeholder="Enter your name"
+                className="w-full bg-bg-secondary border border-text-muted/30 rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-accent-gold mb-4"
+                autoFocus={knownUsers.length === 0}
+                onKeyDown={(e) => e.key === 'Enter' && newUserName.trim() && handleSaveUser()}
+              />
+              <button
+                onClick={handleSaveUser}
+                disabled={!newUserName.trim()}
+                className="w-full py-3 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+              >
+                Let's Go!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* User Change Modal (from header click) */}
       {showUserModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-bg-card rounded-xl p-6 w-full max-w-sm">
-            <h3 className="text-lg font-semibold text-text-primary mb-4">Who are you?</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4">Switch User</h3>
+
+            {/* Quick select existing users */}
+            {knownUsers.length > 0 && (
+              <div className="mb-4">
+                <p className="text-xs text-text-muted mb-2">Select:</p>
+                <div className="flex flex-wrap gap-2">
+                  {knownUsers.map(name => (
+                    <button
+                      key={name}
+                      onClick={() => handleSelectExistingUser(name)}
+                      className={`px-4 py-2 rounded-full transition-colors min-h-[44px] ${
+                        name === firebase.currentUser
+                          ? 'bg-accent-gold text-bg-primary'
+                          : 'bg-bg-secondary text-text-primary hover:bg-bg-card-hover'
+                      }`}
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Or enter new name */}
+            {knownUsers.length > 0 && (
+              <p className="text-xs text-text-muted mb-2">Or enter new:</p>
+            )}
             <input
               type="text"
               value={newUserName}
@@ -40,13 +147,14 @@ function Layout({ children, firebase }) {
             <div className="flex gap-2">
               <button
                 onClick={() => setShowUserModal(false)}
-                className="flex-1 py-2 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors"
+                className="flex-1 py-3 px-4 rounded-lg bg-bg-secondary text-text-secondary hover:bg-bg-card-hover transition-colors min-h-[44px]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveUser}
-                className="flex-1 py-2 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors"
+                disabled={!newUserName.trim()}
+                className="flex-1 py-3 px-4 rounded-lg bg-accent-gold text-bg-primary font-semibold hover:bg-accent-amber transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               >
                 Save
               </button>
