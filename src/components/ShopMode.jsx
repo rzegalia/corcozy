@@ -94,6 +94,7 @@ function ShopMode({ firebase }) {
   };
 
   const handleClaimIngredient = async (ingredientName) => {
+    console.log('handleClaimIngredient called:', ingredientName, 'currentUser:', firebase.currentUser);
     const currentClaim = firebase.getIngredientClaim(ingredientName);
 
     if (currentClaim) {
@@ -107,11 +108,13 @@ function ShopMode({ firebase }) {
       // Claim it
       if (!firebase.currentUser) {
         // Show modal to get name first
+        console.log('No current user, showing modal');
         setPendingIngredient(ingredientName);
         setNameInput('');
         setShowNameModal(true);
       } else {
-        firebase.claimIngredient(ingredientName, firebase.currentUser);
+        console.log('Claiming with current user:', firebase.currentUser);
+        await firebase.claimIngredient(ingredientName, firebase.currentUser);
       }
     }
   };

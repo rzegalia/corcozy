@@ -36,6 +36,11 @@ if (isFirebaseConfigured()) {
 // No default claims - start fresh
 const defaultClaims = {};
 
+// Sanitize string for use as Firebase key (no ., $, #, [, ], /)
+const sanitizeFirebaseKey = (str) => {
+  return str.toLowerCase().trim().replace(/[.#$\[\]\/]/g, '_');
+};
+
 export function useFirebase() {
   const [claims, setClaims] = useState(defaultClaims);
   const [pantry, setPantry] = useState({});
@@ -189,24 +194,32 @@ export function useFirebase() {
 
   // Ingredient claims (collaborative shopping)
   const claimIngredient = async (ingredientKey, claimerName) => {
-    const normalizedKey = ingredientKey.toLowerCase().trim();
+    const normalizedKey = sanitizeFirebaseKey(ingredientKey);
     const claimData = {
       claimedBy: claimerName,
       claimedAt: Date.now()
     };
 
+    console.log('Claiming ingredient:', normalizedKey, 'by', claimerName);
+
     if (database) {
-      await set(ref(database, `ingredientClaims/${normalizedKey}`), claimData);
+      try {
+        await set(ref(database, `ingredientClaims/${normalizedKey}`), claimData);
+        console.log('Ingredient claimed successfully in Firebase');
+      } catch (error) {
+        console.error('Firebase error claiming ingredient:', error);
+      }
     } else {
       setIngredientClaims(prev => ({
         ...prev,
         [normalizedKey]: claimData
       }));
+      console.log('Ingredient claimed in local storage');
     }
   };
 
   const unclaimIngredient = async (ingredientKey) => {
-    const normalizedKey = ingredientKey.toLowerCase().trim();
+    const normalizedKey = sanitizeFirebaseKey(ingredientKey);
     if (database) {
       await set(ref(database, `ingredientClaims/${normalizedKey}`), null);
     } else {
@@ -219,7 +232,7 @@ export function useFirebase() {
   };
 
   const getIngredientClaim = (ingredientName) => {
-    const normalizedKey = ingredientName.toLowerCase().trim();
+    const normalizedKey = sanitizeFirebaseKey(ingredientName);
     return ingredientClaims[normalizedKey] || null;
   };
 
