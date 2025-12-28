@@ -6,10 +6,12 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     host: '0.0.0.0',
-    port: 3030
+    port: 3030,
+    allowedHosts: ['nye.madfatter.lol', 'localhost', '192.168.1.157']
   },
   preview: {
     host: '0.0.0.0',
-    port: 3030
+    port: 3030,
+    allowedHosts: ['nye.madfatter.lol', 'localhost', '192.168.1.157']
   }
 })
