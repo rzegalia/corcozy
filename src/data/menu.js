@@ -108,16 +108,16 @@ export const menuSections = [
     description: 'Sweet treats to carry us into the new year',
     items: [
       {
-        id: 'campfire-dreams',
-        name: 'Campfire Dreams',
-        description: "S'mores dip with graham crackers",
-        emoji: '🏕️'
+        id: 'grants-choice',
+        name: "Grant's Choice",
+        description: 'Grant picks!',
+        emoji: '🎁'
       },
       {
-        id: 'the-sweet-crunch',
-        name: 'The Sweet Crunch',
-        description: 'Cinnamon sugar chips with Nutella',
-        emoji: '🍫'
+        id: 'everetts-choice',
+        name: "Everett's Choice",
+        description: 'Everett picks!',
+        emoji: '🎁'
       },
       {
         id: 'the-bottomless-bowl',

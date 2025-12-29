@@ -363,55 +363,6 @@ export const recipes = {
     ]
   },
 
-  'campfire-dreams': {
-    prepTime: '2 min',
-    cookTime: '3-5 min',
-    difficulty: 'Easy',
-    canMakeAhead: false,
-    steps: [
-      'Set oven to broil (high).',
-      'Position rack 6 inches from the heating element.',
-      'Pour chocolate chips into a small cast iron skillet or oven-safe dish.',
-      'Add butter to the chocolate chips.',
-      'Top evenly with marshmallows in a single layer.',
-      '**Watch carefully from here!**',
-      'Broil 2-4 minutes until marshmallows are golden and toasted.',
-      'Marshmallows can go from perfect to burnt in seconds!',
-      'Remove immediately when they\'re golden and gooey.',
-      'Serve right away with graham crackers for dipping.'
-    ],
-    tips: [
-      'The butter helps the chocolate melt smooth and scoopable.',
-      'Don\'t walk away from the broiler - watch it the whole time!',
-      'A torch works too if you\'re nervous about the broiler.'
-    ]
-  },
-
-  'the-sweet-crunch': {
-    prepTime: '5 min',
-    cookTime: '10 min',
-    difficulty: 'Easy',
-    canMakeAhead: true,
-    makeAheadNote: 'Chips stay crispy for a few hours in an airtight container',
-    steps: [
-      'Preheat oven to 350°F.',
-      'Line a large baking sheet with parchment paper.',
-      'Cut each tortilla into 8 triangles (like a pizza).',
-      'Melt butter in microwave.',
-      'In a small bowl, mix cinnamon and sugar together.',
-      'Brush both sides of each triangle with melted butter.',
-      'Sprinkle cinnamon sugar on both sides.',
-      'Arrange in a single layer on baking sheet (may need 2 batches).',
-      'Bake 8-10 minutes until crispy and golden.',
-      'Let cool - they crisp up more as they cool.',
-      'Serve with Nutella for dipping.'
-    ],
-    tips: [
-      'These are basically homemade churro chips!',
-      'Warm the Nutella slightly for easier dipping.'
-    ]
-  },
-
   'the-bottomless-bowl': {
     prepTime: '5 min',
     cookTime: '5 min',

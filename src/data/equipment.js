@@ -21,12 +21,6 @@ export const equipment = [
     note: 'For keeping cheese sauce warm'
   },
   {
-    id: 'cast-iron',
-    name: 'Cast Iron Skillet',
-    neededFor: ['campfire-dreams'],
-    note: 'Or any oven-safe dish for broiling s\'mores dip'
-  },
-  {
     id: 'grazing-board',
     name: 'Large Grazing Board / Platter',
     neededFor: ['the-grazing-blanket'],

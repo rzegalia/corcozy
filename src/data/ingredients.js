@@ -130,21 +130,6 @@ export const ingredients = {
     { name: 'Shredded Parmesan', quantity: '1/2 cup', category: 'dairy', note: 'Optional' }
   ],
 
-  'campfire-dreams': [
-    { name: 'Semi-sweet chocolate chips', quantity: '2 cups', category: 'baking' },
-    { name: 'Butter', quantity: '2 tbsp', category: 'dairy', note: 'Makes it smoother' },
-    { name: 'Mini marshmallows', quantity: '2 cups', category: 'pantry' },
-    { name: 'Graham crackers', quantity: '1 box', category: 'snacks' }
-  ],
-
-  'the-sweet-crunch': [
-    { name: 'Flour tortillas (large)', quantity: '10 pack', category: 'bread' },
-    { name: 'Butter', quantity: '4 tbsp', category: 'dairy', note: 'Melted' },
-    { name: 'Granulated sugar', quantity: '1/4 cup', category: 'baking' },
-    { name: 'Ground cinnamon', quantity: '1 tbsp', category: 'spices' },
-    { name: 'Nutella', quantity: '1 jar (13 oz)', category: 'pantry' }
-  ],
-
   'the-bottomless-bowl': [
     { name: 'Popcorn kernels', quantity: '1 jar', category: 'pantry', note: 'Or several bags of microwave popcorn' },
     { name: 'Butter', quantity: 'As needed', category: 'dairy' },
